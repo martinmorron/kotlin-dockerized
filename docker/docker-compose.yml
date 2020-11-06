@@ -1,0 +1,43 @@
+version: "3.1"
+
+services:
+  producer:
+    build:
+     context: ..
+     dockerfile: Dockerfile
+     args:
+       PROFILE: producer
+    ports:
+      - 9095:9095
+    depends_on:
+      - mongodb
+      - rabbitmq1
+    network_mode: "host"
+  consumer:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        PROFILE: consumer
+    ports:
+      - 9096:9096
+    depends_on:
+      - mongodb
+      - rabbitmq1
+    network_mode: "host"
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+  rabbitmq1:
+    image: "rabbitmq"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - "./enabled_plugins:/etc/rabbitmq/enabled_plugins"

@@ -1,7 +1,7 @@
 spring:
   profiles: consumer
   rabbitmq:
-    host: localhost
+    host: ${RABBIT_HOST:localhost}
     port: 5672
     username: guest
     password: guest
@@ -13,7 +13,7 @@ server:
 spring:
   profiles: producer
   rabbitmq:
-    host: localhost
+    host: ${RABBIT_HOST:localhost}
     port: 5672
     username: guest
     password: guest
